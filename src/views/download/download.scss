@@ -1,0 +1,175 @@
+html,body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: rgb(248,248,248) !important;
+}
+.wrapper{
+    position: relative;
+    height: 100%;
+    overflow: scroll;
+    font-size: 0;
+    .scroller{
+        position: relative;
+    }
+    .part1{
+        position: relative;
+        height: 980px;/*no*/
+        .txt{
+            position: absolute;
+            width: 529px;/*no*/
+            height: 170px;/*no*/
+            top: 75px;/*no*/
+            left: (750px-529px)/2;/*no*/
+            background: url('./images/txt_1.png');
+        }
+        .left_top_c{
+            position: absolute;
+            top: 550px;/*no*/
+            left: 100px;/*no*/
+            width: 113px;/*no*/
+            height: 113px;/*no*/
+            background: url('./images/left_top_circle.png');
+            animation: ani_c 4s infinite linear alternate;
+        }
+        .left_bottom_c{
+            position: absolute;
+            top: 740px;/*no*/
+            left: 50px;/*no*/
+            width: 160px;/*no*/
+            height: 160px;/*no*/
+            background: url('./images/left_bottom_circle.png');
+            animation: ani_c 4s infinite linear alternate;
+            animation-delay: 2000ms;
+        }
+        .right_c{
+            position: absolute;
+            top: 670px;/*no*/
+            right: 50px;/*no*/
+            width: 160px;/*no*/
+            height: 160px;/*no*/
+            background: url('./images/right_circle.png');
+            animation: ani_c 4s infinite linear alternate;
+            animation-delay: 1000ms;
+        }
+        .space{
+            min-height: 178px;/*no*/
+            background: url('./images/sec_02.png');
+            background-size: 100% 100%;
+        }
+        .down{
+            position: absolute;
+            z-index: 1;
+            width: 111px;/*no*/
+            height: 59px;/*no*/
+            left: (750px-111px)/2;/*no*/
+            bottom: 20px;/*no*/
+            background: url('./images/arrow_down.png') no-repeat center;
+            animation: ani_down 2s linear infinite;
+        }
+    }
+    .part2{
+        position: relative;
+        .txt{
+            position: absolute;
+            width: 214px;/*no*/
+            height: 107px;/*no*/
+            top: 70px;/*no*/
+            left: (750px-214px)/2;/*no*/
+            background: url('./images/txt_2.png');
+        }
+    }
+    .part3{
+        position: relative;
+        .txt{
+            position: absolute;
+            width: 217px;/*no*/
+            height: 107px;/*no*/
+            top: 0px;/*no*/
+            left: (750px-217px)/2;/*no*/
+            background: url('./images/txt_3.png');
+        }
+    }
+    .part4{
+        position: relative;
+        .txt{
+            position: absolute;
+            left: 0;
+            bottom: 120px;/*no*/
+            width: 100%;
+            height: 64px;/*no*/
+            line-height: 32px;/*no*/
+            font-size: 20px;/*no*/
+            color: #999;
+            text-align: center;
+        }
+    }
+    .download_icon_1{
+        display: none;
+        position: absolute;
+        z-index: 2;
+        width: 543px;/*no*/
+        height: 97px;/*no*/
+        top: 981px;/*no*/
+        left: (750px-543px)/2;/*no*/
+        background: url('./images/download.png');
+        box-shadow: 1px 5px 10px rgba(0,0,0,0.5);/*no*/
+    }
+    .download_icon_2{
+        display: none;
+        position: absolute;
+        z-index: 2;
+        width: 543px;/*no*/
+        height: 97px;/*no*/
+        top: 0px;/*no*/
+        left: (750px-543px)/2;/*no*/
+        background: url('./images/download.png');
+        box-shadow: 1px 5px 10px rgba(0,0,0,0.5);/*no*/
+    }
+    .top{
+        position: fixed;
+        z-index: 1;
+        width: 111px;/*no*/
+        height: 59px;/*no*/
+        left: (750px-111px)/2;/*no*/
+        bottom: 270px;/*no*/
+        background: url('./images/arrow_top.png');
+    }
+    .show{
+        display: block;
+    }
+
+}
+.cover_wrap{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8) url('./images/cover.png') no-repeat top right;
+}
+@keyframes ani_c{
+    0%{
+        transform: translate3d(0,0,0);
+    }
+    50%{
+        transform: translate3d(0,-20px,0);/*no*/
+    }
+    100%{
+        transform: translate3d(0,20px,0);/*no*/
+    }
+}
+@keyframes ani_down{
+    0%{
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
+    50%{
+        transform: translate3d(0,10px,0);/*no*/
+        opacity: 1;
+    }
+    100%{
+        transform: translate3d(0,20px,0);/*no*/
+        opacity: 1;
+    }
+}
