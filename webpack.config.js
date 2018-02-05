@@ -7,7 +7,7 @@ module.exports = {
     devtool: 'cheap-module-eval-source-map',
     entry: {
         main: __dirname + '/src/views/download/download.js',
-        // vendor: __dirname + '/src/views/components'
+        vendor: ["vue"]
     },
     output: {
         path: __dirname + '/dist',
@@ -56,15 +56,8 @@ module.exports = {
             title: 'demo',
             template: 'src/views/download/download.html'
         }),
-        // new UglifyJsPlugin({
-        //     beautify: true,
-        //     exclude: ['/node_modules/'],
-        //     compress: {
-        //         warnings: false
-        //     },
-        //     output: {
-        //         comments: false
-        //     }
-        // })
+        new UglifyJsPlugin({
+            exclude: /node_modules/
+        })
     ]
 }
