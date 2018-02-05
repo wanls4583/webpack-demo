@@ -7,12 +7,12 @@ module.exports = {
     devtool: 'cheap-module-eval-source-map',
     entry: {
         main: __dirname + '/src/views/download/download.js',
-        vendor: __dirname + '/src/views/components'
+        // vendor: __dirname + '/src/views/components'
     },
     output: {
         path: __dirname + '/dist',
         filename: '[name].[id].js',
-        publicPath: '/dist/'
+        publicPath: './'
     },
     devServer: {
         inline: true,
@@ -30,6 +30,14 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: 'url-loader',
+                query: {
+                    limit: 10000,
+                    name: 'img/[name].[hash:8].[ext]'
+                }
             }
         ]
     },
