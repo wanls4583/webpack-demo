@@ -4,7 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-    devtool: 'cheap-module-eval-source-map',
+    devtool: false,//'#cheap-module-eval-source-map'//使用devtool只能在开发环境，不然编译后文件非常大
     entry: {
         main: __dirname + '/src/views/download/download.js',
         vendor: ["vue"]
@@ -43,7 +43,7 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(
-            ['public/main.*.js', 'public/manifest.*.js'], {
+            ['dist/*'], {
                 root: __dirname,
                 verbose: true,
                 dry: false
@@ -56,8 +56,6 @@ module.exports = {
             title: 'demo',
             template: 'src/views/download/download.html'
         }),
-        new UglifyJsPlugin({
-            exclude: /node_modules/
-        })
+        new UglifyJsPlugin()
     ]
 }
