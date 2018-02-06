@@ -2,9 +2,10 @@ var webpack = require('webpack');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
+var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
-    devtool: false,//'#cheap-module-eval-source-map'//使用devtool只能在开发环境，不然编译后文件非常大
+    devtool: '#source-map',//'#cheap-module-eval-source-map'在开发环境中使用，编译后文件非常大
     entry: {
         main: __dirname + '/src/views/download/download.js',
         vendor: ["vue"]
@@ -29,7 +30,17 @@ module.exports = {
             },
             {
                 test: /\.vue$/,
-                loader: 'vue-loader'
+                loader: 'vue-loader',
+                options: {loaders:{
+                  scss: ExtractTextPlugin.extract({ //提取组件里的scss到单独的文件
+                      use: ['css-loader', 'sass-loader'],
+                      fallback: 'vue-style-loader'
+                  }),
+                  css: ExtractTextPlugin.extract({ //提取组件里的css到单独的文件
+                      use: 'css-loader',
+                      fallback: 'vue-style-loader'
+                  }),
+                }}
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -56,6 +67,17 @@ module.exports = {
             title: 'demo',
             template: 'src/views/download/download.html'
         }),
-        new UglifyJsPlugin()
+        new UglifyJsPlugin({
+            sourceMap: true, //为false的话将会删除sourceMap文件
+            uglifyOptions:{
+                compress: {
+                    warnings: false
+                }
+            }
+        }),
+        new OptimizeCSSPlugin({
+            cssProcessorOptions:{ safe: true, map: { inline: false } }
+        }),
+        new ExtractTextPlugin({filename: 'css/[name].[hash:5].css', allChunks: true})
     ]
 }
