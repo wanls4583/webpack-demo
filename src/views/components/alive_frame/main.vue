@@ -5,7 +5,3 @@
 	    </keep-alive>
     </main>
 </template>
-
-<style lang="scss">
-    @import '../../../../assets/sass/index.scss';
-</style>

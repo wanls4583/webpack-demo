@@ -26,16 +26,16 @@
             <i class="top" @click="scroll('top')"></i>
         </section>
     </div>
-    <!-- <Tip v-if="ifShowTip" v-bind:content="'程序猿小哥火力开发中<br>，敬请期待'"></Tip> -->
+    <Tip v-if="ifShowTip" v-bind:content="'程序猿小哥火力开发中<br>，敬请期待'"></Tip>
     <div v-if="showCover" class="cover_wrap" @click="showCover=false"></div>
 </div>
 </template>
 
 <script>
-    // import Tip from '../components/small_tip/index.vue';
+    import Tip from '../components/small_tip/index.vue';
 
     export default {
-        // components:{Tip},
+        components:{Tip},
         data () {
             return {
                 scrollerHeight: 981+832+960+480,

@@ -1,3 +1,4 @@
+var path = require('path');
 var webpack = require('webpack');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -7,8 +8,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     devtool: '#source-map',//'#cheap-module-eval-source-map'在开发环境中使用，编译后文件非常大
     entry: {
-        main: __dirname + '/src/views/download/download.js',
-        vendor: ["vue"]
+        main1: __dirname + '/src/views/download/download.js',
+        main2: __dirname + '/src/views/feedback/feedback.js',
     },
     output: {
         path: __dirname + '/dist',
@@ -61,11 +62,26 @@ module.exports = {
             }
         ),
         new webpack.optimize.CommonsChunkPlugin({
-            names: ['vendor', 'manifest']
+            names: ['vendor'],
+            minChunks: //2,//模块最少被引用过多少次才会被提取到公共模块
+            function(module){ //也可以用函数判断该模块是否需要被提取到公共模块，这里只提取node_modules下的模块
+                var ifCommon = module.resource &&
+                /\.js$/.test(module.resource) &&
+                module.resource.indexOf(path.join(__dirname, 'node_modules')) === 0
+                return ifCommon
+            },
         }),
         new HtmlWebpackPlugin({
-            title: 'demo',
-            template: 'src/views/download/download.html'
+            title: 'download',
+            template: 'src/views/download/download.html',
+            filename: 'download.html',
+            chunks: ['main1','vendor']
+        }),
+        new HtmlWebpackPlugin({
+            title: 'feedback',
+            template: 'src/views/feedback/feedback.html',
+            filename: 'feedback.html',
+            chunks: ['vendor','main2']
         }),
         new UglifyJsPlugin({
             sourceMap: true, //为false的话将会删除sourceMap文件

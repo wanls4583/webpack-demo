@@ -1,0 +1,59 @@
+@charset "UTF-8";
+html,body{
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	background: rgb(248,248,248) !important;
+}
+.wrapper {
+    height: 100%;
+    overflow: auto;
+    .suc_icon{
+        height: 220px;/*no*/
+        margin: 73px auto 26px auto;/*no*/
+        background: url('./images/suc.png') center center no-repeat;
+        background-size: auto 100%;
+    }
+    .suc_txt{
+        font-size: 34px;/*no*/
+        line-height: 44px;/*no*/
+        color: #666;
+        text-align: center;
+    }
+    .cut_off_rule{
+        display: block;
+        margin: 78px 30px 50px;/*no*/
+        height: 1px;/*no*/
+        background: #E5E5E5;
+    }
+    .desc_w{
+        .desc_t{
+            margin: 0 0 15px 30px;/*no*/
+            font-size: 28px;/*no*/
+            color: #666;
+            line-height: 42px;/*no*/
+        }
+        .desc_c{
+            max-height: 100%;
+            margin: 0 0 150px 30px;/*no*/
+            font-size: 28px;/*no*/
+            line-height: 40px;/*no*/
+            color: #999;
+        }
+    }
+    .back_btn{
+        position: fixed;
+        bottom: 50px;/*no*/
+        width: 100%;
+        text-align: center;
+        span{
+            display: inline-block;
+            width: 660px;/*no*/
+            border-radius: 6px;/*no*/
+            line-height: 90px;/*no*/
+            background: #FF8359;
+            font-size: 34px;/*no*/
+            color: #fff;
+        }
+    }
+}
