@@ -5,15 +5,22 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var CompressionWebpackPlugin = require('compression-webpack-plugin');
+
+function resolve(path){
+    return __dirname + '/' + path;
+}
 module.exports = {
     devtool: '#source-map',//'#cheap-module-eval-source-map'在开发环境中使用，编译后文件非常大
     entry: {
-        main1: __dirname + '/src/views/download/download.js',
-        main2: __dirname + '/src/views/feedback/feedback.js',
+        download: resolve('src/views/download/download.js'),
+        feedback: resolve('src/views/feedback/feedback.js')
     },
     output: {
-        path: __dirname + '/dist',
-        filename: '[name].[id].js',
+        path: resolve('dist'),
+        filename: '[name].[chunkhash:8].js', //chunkhash代表每个模块的内容hash值，hash代表一次编译的hash值(所有输出文件的hash值一样)
+        chunkFilename: '[name].[id].js',
         publicPath: './'
     },
     devServer: {
@@ -21,7 +28,17 @@ module.exports = {
         hot: true
     },
     module: {
-        loaders: [{
+        loaders: [
+            // {
+            //     test: /\.(js|vue)$/,
+            //     loader: 'eslint-loader',
+            //     enforce: "pre",
+            //     include: [resolve('src')],
+            //     options: {
+            //         formatter: require('eslint-friendly-formatter')
+            //     }
+            // },
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
@@ -54,6 +71,7 @@ module.exports = {
         ]
     },
     plugins: [
+        //删除文件
         new CleanWebpackPlugin(
             ['dist/*'], {
                 root: __dirname,
@@ -61,6 +79,7 @@ module.exports = {
                 dry: false
             }
         ),
+        //公共代码提取
         new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor'],
             minChunks: //2,//模块最少被引用过多少次才会被提取到公共模块
@@ -71,18 +90,26 @@ module.exports = {
                 return ifCommon
             },
         }),
+        //避免每次修改业务内容时，vendor的内容改变（不使用manifest的时候，
+        //vendor里需要引用业务模块，而业务模块名称每次修改可能改变）
+        new webpack.optimize.CommonsChunkPlugin({
+            names: ['manifest'],
+            minChunks: Infinity //为无穷大时，将只提取模块加载相关的代码
+        }),
+        //生成html文件（可添加多个）
         new HtmlWebpackPlugin({
             title: 'download',
             template: 'src/views/download/download.html',
             filename: 'download.html',
-            chunks: ['main1','vendor']
+            chunks: ['download','vendor','manifest'] //需要动态插入的模块
         }),
         new HtmlWebpackPlugin({
             title: 'feedback',
             template: 'src/views/feedback/feedback.html',
             filename: 'feedback.html',
-            chunks: ['vendor','main2']
+            chunks: ['vendor','feedback','manifest']
         }),
+        //压缩js代码
         new UglifyJsPlugin({
             sourceMap: true, //为false的话将会删除sourceMap文件
             uglifyOptions:{
@@ -91,9 +118,25 @@ module.exports = {
                 }
             }
         }),
+        //优化css样式
         new OptimizeCSSPlugin({
             cssProcessorOptions:{ safe: true, map: { inline: false } }
         }),
-        new ExtractTextPlugin({filename: 'css/[name].[hash:5].css', allChunks: true})
+        //css样式提取
+        new ExtractTextPlugin({filename: 'css/[name].[hash:8].css', allChunks: true}),
+        //避免添加新文件时，已有模块的id被改变（可能导致vendor的内容发生改变）
+        new webpack.HashedModuleIdsPlugin(),
+        //打包分析工具
+        //new BundleAnalyzerPlugin(),
+        //作用域提升（如果模块是使用es5的方式引入的，则可减少打包后的函数模块数量）
+        new webpack.optimize.ModuleConcatenationPlugin(),
+        //gzip压缩(一般不需要前端去生成，服务器会自动压缩)
+        // new CompressionWebpackPlugin({
+        //     asset: '[path].gz[query]',
+        //     algorithm: 'gzip',
+        //     test: /\.js$/,
+        //     threshold: 10240,
+        //     minRatio: 0.8
+        // })
     ]
 }
