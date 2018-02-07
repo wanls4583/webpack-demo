@@ -19,9 +19,9 @@ module.exports = {
     },
     output: {
         path: resolve('dist'),
-        filename: '[name].[chunkhash:8].js', //chunkhash代表每个模块的内容hash值，hash代表一次编译的hash值(所有输出文件的hash值一样)
+        filename: '[name].[hash:8].js', //chunkhash代表每个模块的内容hash值，hash代表一次编译的hash值(所有输出文件的hash值一样)
         chunkFilename: '[name].[id].js',
-        publicPath: './'
+        publicPath: '/'
     },
     devServer: {
         inline: true,
@@ -72,13 +72,13 @@ module.exports = {
     },
     plugins: [
         //删除文件
-        new CleanWebpackPlugin(
-            ['dist/*'], {
-                root: __dirname,
-                verbose: true,
-                dry: false
-            }
-        ),
+        // new CleanWebpackPlugin(
+        //     ['dist/*'], {
+        //         root: __dirname,
+        //         verbose: true,
+        //         dry: false
+        //     }
+        // ),
         //公共代码提取
         new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor'],
@@ -140,6 +140,6 @@ module.exports = {
         // }),
         //HotModule 插件在页面进行变更的时候只会重回对应的页面模块，不会重绘整个 html 文件
         //需要配合webpack-hot-middleware一起使用
-        // new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin()
     ]
 }
