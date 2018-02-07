@@ -137,6 +137,9 @@ module.exports = {
         //     test: /\.js$/,
         //     threshold: 10240,
         //     minRatio: 0.8
-        // })
+        // }),
+        //HotModule 插件在页面进行变更的时候只会重回对应的页面模块，不会重绘整个 html 文件
+        //需要配合webpack-hot-middleware一起使用
+        // new webpack.HotModuleReplacementPlugin()
     ]
 }
