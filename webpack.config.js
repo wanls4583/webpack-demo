@@ -7,6 +7,7 @@ var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var CompressionWebpackPlugin = require('compression-webpack-plugin');
+var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 function resolve(path){
     return __dirname + '/' + path;
@@ -49,16 +50,16 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                options: {loaders:{
-                  scss: ExtractTextPlugin.extract({ //提取组件里的scss到单独的文件
-                      use: ['css-loader', 'sass-loader'],
-                      fallback: 'vue-style-loader'
-                  }),
-                  css: ExtractTextPlugin.extract({ //提取组件里的css到单独的文件
-                      use: 'css-loader',
-                      fallback: 'vue-style-loader'
-                  }),
-                }}
+                // options: {loaders:{
+                //   scss: ExtractTextPlugin.extract({ //提取组件里的scss到单独的文件
+                //       use: ['css-loader', 'sass-loader'],
+                //       fallback: 'vue-style-loader'
+                //   }),
+                //   css: ExtractTextPlugin.extract({ //提取组件里的css到单独的文件
+                //       use: 'css-loader',
+                //       fallback: 'vue-style-loader'
+                //   }),
+                // }}
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -80,16 +81,16 @@ module.exports = {
         //     }
         // ),
         //公共代码提取
-        new webpack.optimize.CommonsChunkPlugin({
-            names: ['vendor'],
-            minChunks: //2,//模块最少被引用过多少次才会被提取到公共模块
-            function(module){ //也可以用函数判断该模块是否需要被提取到公共模块，这里只提取node_modules下的模块
-                var ifCommon = module.resource &&
-                /\.js$/.test(module.resource) &&
-                module.resource.indexOf(path.join(__dirname, 'node_modules')) === 0
-                return ifCommon
-            },
-        }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     names: ['vendor'],
+        //     minChunks: //2,//模块最少被引用过多少次才会被提取到公共模块
+        //     function(module){ //也可以用函数判断该模块是否需要被提取到公共模块，这里只提取node_modules下的模块
+        //         var ifCommon = module.resource &&
+        //         /\.js$/.test(module.resource) &&
+        //         module.resource.indexOf(path.join(__dirname, 'node_modules')) === 0
+        //         return ifCommon
+        //     },
+        // }),
         //避免每次修改业务内容时，vendor的内容改变（不使用manifest的时候，
         //vendor里需要引用业务模块，而业务模块名称每次修改可能改变）
         new webpack.optimize.CommonsChunkPlugin({
@@ -123,7 +124,7 @@ module.exports = {
             cssProcessorOptions:{ safe: true, map: { inline: false } }
         }),
         //css样式提取
-        new ExtractTextPlugin({filename: 'css/[name].[hash:8].css', allChunks: true}),
+        // new ExtractTextPlugin({filename: 'css/[name].[hash:8].css', allChunks: true}),
         //避免添加新文件时，已有模块的id被改变（可能导致vendor的内容发生改变）
         new webpack.HashedModuleIdsPlugin(),
         //打包分析工具
@@ -140,6 +141,10 @@ module.exports = {
         // }),
         //HotModule 插件在页面进行变更的时候只会重回对应的页面模块，不会重绘整个 html 文件
         //需要配合webpack-hot-middleware一起使用
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        //在编译出现错误时，使用 NoEmitOnErrorsPlugin 来跳过输出阶段。这样可以确保输出资源不会包含错误
+        new webpack.NoEmitOnErrorsPlugin(),
+        //用于更友好地输出webpack的警告、错误等信息
+        new FriendlyErrorsPlugin()
     ]
 }
