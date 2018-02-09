@@ -26,6 +26,14 @@ webpackBaseConfig = merge(webpackBaseConfig,{
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: 'url-loader',
+                query: {
+                    limit: 10000,
+                    name: '[name].[ext]'
+                }
             }
         ]
     },
@@ -52,7 +60,6 @@ Object.keys(entrys).forEach(function(key){
         filename: basename+'.html',
         chunks: [key]
     }))
-    console.log(template,key)
 })
 
 module.exports = webpackBaseConfig;
