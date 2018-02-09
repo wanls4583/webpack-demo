@@ -22,9 +22,9 @@ webpackBaseConfig.entry = entrys;
 webpackBaseConfig = merge(webpackBaseConfig,{
     devtool: '#source-map',//'#cheap-module-eval-source-map'在开发环境中使用，编译后文件非常大
     output: {
-        path: resolve('dist'),
-        filename: '[name].[chunkhash:8].js', //chunkhash代表每个模块的内容hash值，hash代表一次编译的hash值(所有输出文件的hash值一样)
-        chunkFilename: '[name].[id].js',
+        path: resolve('./dist'),
+        filename: './js/[name].[chunkhash:8].js', //chunkhash代表每个模块的内容hash值，hash代表一次编译的hash值(所有输出文件的hash值一样)
+        chunkFilename: './js/[name].[id].js',
         publicPath: 'http://locoalhost:8888/'
     },
     module: {
@@ -85,7 +85,7 @@ webpackBaseConfig = merge(webpackBaseConfig,{
             cssProcessorOptions:{ safe: true, map: { inline: false } }
         }),
         //css样式提取
-        new ExtractTextPlugin({filename: 'css/[name].[hash:8].css', allChunks: true}),
+        new ExtractTextPlugin({filename: './css/[name].[hash:8].css', allChunks: true}),
         //避免添加新文件时，已有模块的id被改变（可能导致vendor的内容发生改变）
         new webpack.HashedModuleIdsPlugin(),
         //作用域提升（如果模块是使用es5的方式引入的，则可减少打包后的函数模块数量）
@@ -109,9 +109,10 @@ Object.keys(entrys).forEach(function(key){
 	var entry = entrys[key];
 	var basename = path.basename(entry,path.extname(entry));
 	var template = entry.substring(0,entry.lastIndexOf('/')+1)+basename;
+    var tmp = template.split('/');
 	webpackBaseConfig.plugins.push(new HtmlWebpackPlugin({
         template: template+'.html',
-        filename: basename+'.html',
+        filename: tmp.slice(tmp.indexOf('src')+1).join('/')+'.html',
         chunks: [key,'vendor','manifest']
     }))
 })
