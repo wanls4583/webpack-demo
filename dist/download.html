@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>知狐</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="black" name="apple-mobile-web-app-status-bar-style">
+        <meta name="format-detection"content="telephone=no, email=no" />
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <script>
+            (function(){
+                var userScalable = ''
+                function flex(){
+                    var metaEl = document.querySelector('meta[name="viewport"]');
+                    var width = 750;
+                    var dpr = window.devicePixelRatio;
+                    var phoneScale = parseInt(window.screen.width)/width;
+                    var content = '';
+                    if (window.screen.width > 540) {
+                        var tmp = width * (window.screen.width/540);
+                        phoneScale = parseInt(window.screen.width)/tmp;
+                    }
+                    if(location.href.indexOf('eruda')==-1){
+                        userScalable = ', maximum-scale = ' + phoneScale + ', user-scalable=no';
+                    }
+                    content = 'width = 750, minimum-scale = ' + phoneScale + userScalable;
+                    if(metaEl){
+                        metaEl.setAttribute('content',content)
+                    }else{
+                        document.write('<meta name="viewport" content="'+content+'"/>');
+                    }
+                }
+                flex();
+                window.onresize = flex;
+            })();
+            if(location.href.indexOf('eruda')!=-1){
+                var src = '//cdn.bootcss.com/eruda/1.3.0/eruda.min.js';
+                document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+                document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+            }
+        </script>
+    <link href="http://locoalhost:8888/css/download.bf49e298.css" rel="stylesheet"></head>
+    <body>
+        <div id="app"></div>
+    <script type="text/javascript" src="http://locoalhost:8888/manifest.53e28452.js"></script><script type="text/javascript" src="http://locoalhost:8888/vendor.9ab23343.js"></script><script type="text/javascript" src="http://locoalhost:8888/download.22179d91.js"></script></body>
+</html>

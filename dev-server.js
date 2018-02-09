@@ -1,7 +1,7 @@
 var path = require('path');
 var express = require('express');
 var webpack = require('webpack');
-var webpackConfig = require('./webpack.config.js');
+var webpackConfig = require('./webpack.dev.conf.js');
 
 // 创建一个express实例
 var app = express()
@@ -11,11 +11,10 @@ var devClient = 'webpack-hot-middleware/client';
 Object.keys(webpackConfig.entry).forEach(function (name, i) {
     var extras = [devClient]
     webpackConfig.entry[name] = extras.concat(webpackConfig.entry[name])
-    console.log(webpackConfig.entry[name])
 })
 
 // 调用webpack并把配置传递过去
-var compiler = webpack(webpackConfig)
+var compiler = webpack(webpackConfig);
 
 // 使用 webpack-dev-middleware 中间件
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
@@ -32,9 +31,7 @@ var hotMiddleware = require('webpack-hot-middleware')(compiler)
 compiler.plugin('compilation', function (compilation) {
     compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
         // 发布事件
-        setTimeout(function(){
-            hotMiddleware.publish({ action: 'reload' })
-        },500)
+        hotMiddleware.publish({ action: 'reload' })
         cb()
     })
 })

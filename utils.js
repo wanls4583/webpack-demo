@@ -7,8 +7,9 @@ module.exports={
 			var basename = path.basename(entry,path.extname(entry));
 			var tmp = entry.split('/');
 			if(tmp.length==4 || tmp[tmp.length-2]+'.js'==tmp[tmp.length-1]){
-				entrys[basename] = tmp.splice(0,3).join('/');
+				entrys[basename] = entry;
 			}
-		})
+		});
+		return entrys;
 	}
 }
